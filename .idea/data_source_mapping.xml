@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourcePerFileMappings">
+    <file url="file://$PROJECT_DIR$/.idea/queries/Query.sql" value="d0a8afa9-fd69-4713-acf9-1d7cfafeb665" />
+    <file url="file://$PROJECT_DIR$/backend/database/create_database_videogamestore.sql" value="d0a8afa9-fd69-4713-acf9-1d7cfafeb665" />
+  </component>
+</project>
