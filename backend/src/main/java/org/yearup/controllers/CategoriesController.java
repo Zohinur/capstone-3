@@ -1,7 +1,9 @@
 package org.yearup.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.yearup.models.Category;
 import org.yearup.models.Product;
@@ -40,10 +42,17 @@ public class CategoriesController
 
     // add the appropriate annotation for a get action
     @GetMapping("/{id}")
-    public Category getById(@PathVariable int id)
+    public ResponseEntity<Category> getById(@PathVariable int id)
     {
         // get the category by id
-        return categoryService.getById(id);
+
+        Category category = categoryService.getById(id);
+
+        if(category == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(category);
+        }
     }
 
     // the url to return all products in category 1 would look like this
@@ -56,28 +65,49 @@ public class CategoriesController
         // get a list of product by categoryId
     }
 
+    @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     // add annotation to call this method for a POST action
     // add annotation to ensure that only an ADMIN can call this function
     public ResponseEntity<Category> addCategory(@RequestBody Category category)
     {
         // insert the category and return it with status 201 Created
-        return null;
+
+        Category saved = categoryService.create(category);
+        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
+    @PutMapping("{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     // add annotation to call this method for a PUT (update) action - the url path must include the categoryId
     // add annotation to ensure that only an ADMIN can call this function
-    public Category updateCategory(@PathVariable int id, @RequestBody Category category)
+    public ResponseEntity<Category> updateCategory(@PathVariable int id, @RequestBody Category category)
     {
         // update the category by id and return the updated category (200 OK)
-        return null;
+        Category existingCategory = categoryService.update(id, category);
+        if (existingCategory == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(existingCategory);
+        }
+
+
     }
 
 
+    @DeleteMapping("{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     // add annotation to call this method for a DELETE action - the url path must include the categoryId
     // add annotation to ensure that only an ADMIN can call this function
     public ResponseEntity<Void> deleteCategory(@PathVariable int id)
     {
         // delete the category by id and return status 204 No Content
-        return null;
+        if(categoryService.getById(id) ==  null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }else {
+            categoryService.delete(id);
+            return ResponseEntity.noContent().build();
+        }
+
     }
 }
