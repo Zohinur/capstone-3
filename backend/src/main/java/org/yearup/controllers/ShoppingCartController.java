@@ -1,6 +1,10 @@
 package org.yearup.controllers;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.yearup.models.ShoppingCart;
 import org.yearup.models.User;
@@ -10,6 +14,7 @@ import org.yearup.service.UserService;
 import java.security.Principal;
 
 @RestController
+@RequestMapping("/cart")
 @PreAuthorize("hasRole('ROLE_USER')")
 // convert this class to a REST controller
 // only logged in users should have access to these actions
@@ -25,7 +30,8 @@ public class ShoppingCartController
     }
 
     // each method in this controller requires a Principal object as a parameter
-    public ShoppingCart getCart(Principal principal)
+@GetMapping
+    public ResponseEntity<ShoppingCart> getCart(Principal principal)
     {
         // get the currently logged in username
         String userName = principal.getName();
@@ -34,7 +40,14 @@ public class ShoppingCartController
         int userId = user.getId();
 
         // use the shoppingCartService to get all items in the cart and return the cart
-        return null;
+
+
+        ShoppingCart shoppingCart = shoppingCartService.getByUserId(userId);
+        if(shoppingCart == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(shoppingCart);
+        }
     }
 
     // add a POST method to add a product to the cart - the url should be
