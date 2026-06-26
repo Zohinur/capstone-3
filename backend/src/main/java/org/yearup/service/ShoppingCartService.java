@@ -30,9 +30,7 @@ public class ShoppingCartService
 
         for (CartItem c: cartItems){
                 Product product = productService.getById(c.getProductId());
-                if (product == null){
-                    throw new RuntimeException("not exist null" + c.getProductId());
-                }
+//
             ShoppingCartItem shoppingCartItem = new ShoppingCartItem();
                 shoppingCartItem.setProduct(product);
                 shoppingCartItem.setQuantity(c.getQuantity());

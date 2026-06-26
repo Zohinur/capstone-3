@@ -48,9 +48,12 @@ public class CategoriesController
 
         Category category = categoryService.getById(id);
 
+
         if(category == null) {
+            //Using Response Entity status to return the status of the code when its not found, which is 401
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } else {
+            //Using the Response Entity status to send 201 which means it has been created
             return ResponseEntity.status(HttpStatus.OK).body(category);
         }
     }
@@ -96,6 +99,7 @@ public class CategoriesController
 
 
     @DeleteMapping("{id}")
+    //Using PreAuthorzation annotatoin to only allow admin to access the code
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     // add annotation to call this method for a DELETE action - the url path must include the categoryId
     // add annotation to ensure that only an ADMIN can call this function

@@ -39,6 +39,7 @@ public class CategoryService
     public Category update(int categoryId, Category category)
     {
         // update category and return the updated category
+        //Returning the category by using category ID
         Category existCategory = getById(categoryId);
         existCategory.setName(category.getName());
         existCategory.setDescription(category.getDescription());

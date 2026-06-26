@@ -75,6 +75,7 @@ public class ShoppingCartController {
         // find database user by username
         User user = userService.getByUserName(userName);
         int userId = user.getId();
+        return null;
     }
 
     // add a DELETE method to clear all products from the current users cart
