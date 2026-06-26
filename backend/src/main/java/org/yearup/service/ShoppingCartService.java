@@ -76,6 +76,7 @@ public class ShoppingCartService {
         CartItem cartitem = shoppingCartRepository.findByUserIdAndProductId(userId, productId);
 
         if (cartitem != null) {
+            //if it's not null it deletes the shopping cart
             shoppingCartRepository.delete(cartitem);
         }
         return getByUserId(userId);
