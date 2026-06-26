@@ -75,7 +75,14 @@ public class ShoppingCartController {
         // find database user by username
         User user = userService.getByUserName(userName);
         int userId = user.getId();
-        return null;
+        ShoppingCart updateCart = shoppingCartService.updateProduct(userId, productID, shoppingCartItem.getQuantity());
+
+        if(updateCart == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(updateCart);
+        }
+
     }
 
     // add a DELETE method to clear all products from the current users cart

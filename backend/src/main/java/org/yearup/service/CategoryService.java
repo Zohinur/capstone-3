@@ -48,6 +48,7 @@ public class CategoryService
 
     public void delete(int categoryId)
     {
+        //Using the category Repository I was able to delete the category
         categoryRepository.deleteById(categoryId);
     }
 }
