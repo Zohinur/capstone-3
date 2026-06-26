@@ -70,14 +70,14 @@ public class ShoppingCartController {
     // https://localhost:8080/cart/products/15  (15 is the productId to be updated)
     // the BODY should be a ShoppingCartItem - quantity is the only value that will be updated; return the cart (200 OK)
     @PutMapping("/products/{productID}")
-    public ResponseEntity<ShoppingCart> updateProduct(@PathVariable int productID, @RequestBody ShoppingCartItem shoppingCartItem, Principal principal){
+    public ResponseEntity<ShoppingCart> updateProduct(@PathVariable int productID, @RequestBody ShoppingCartItem shoppingCartItem, Principal principal) {
         String userName = principal.getName();
         // find database user by username
         User user = userService.getByUserName(userName);
         int userId = user.getId();
         ShoppingCart updateCart = shoppingCartService.updateProduct(userId, productID, shoppingCartItem.getQuantity());
 
-        if(updateCart == null){
+        if (updateCart == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         } else {
             return ResponseEntity.status(HttpStatus.OK).body(updateCart);
@@ -87,5 +87,20 @@ public class ShoppingCartController {
 
     // add a DELETE method to clear all products from the current users cart
     // https://localhost:8080/cart  - return the (now empty) cart so the front end can refresh it (200 OK)
+
+    @DeleteMapping("/products/{productID}")
+    public ResponseEntity<ShoppingCart> deleteProduct(@PathVariable int productID, Principal principal) {
+        String userName = principal.getName();
+        // find database user by username
+        User user = userService.getByUserName(userName);
+        int userId = user.getId();
+        ShoppingCart deleteCart = shoppingCartService.deleteProduct(userId, productID);
+
+        if (deleteCart == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.OK).body(deleteCart);
+        }
+    }
 
 }

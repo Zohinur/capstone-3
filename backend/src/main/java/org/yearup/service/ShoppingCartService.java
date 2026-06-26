@@ -71,4 +71,13 @@ public class ShoppingCartService {
         }
         return getByUserId(userId);
     }
+
+    public ShoppingCart deleteProduct(int userId, int productId) {
+        CartItem cartitem = shoppingCartRepository.findByUserIdAndProductId(userId, productId);
+
+        if (cartitem != null) {
+            shoppingCartRepository.delete(cartitem);
+        }
+        return getByUserId(userId);
+    }
 }
