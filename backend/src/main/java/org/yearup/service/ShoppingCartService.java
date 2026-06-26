@@ -30,15 +30,15 @@ public class ShoppingCartService
 
         for (CartItem c: cartItems){
                 Product product = productService.getById(c.getProductId());
+                if (product == null){
+                    throw new RuntimeException("not exist null" + c.getProductId());
+                }
             ShoppingCartItem shoppingCartItem = new ShoppingCartItem();
                 shoppingCartItem.setProduct(product);
-                shoppingCartItem.setQuantity(shoppingCartItem.getQuantity());
-                shoppingCartItem.setDiscountPercent(shoppingCartItem.getDiscountPercent());
-                shoppingCartItem.getLineTotal();
-
+                shoppingCartItem.setQuantity(c.getQuantity());
+                shoppingCartItem.setDiscountPercent(0);
                 shoppingCart.add(shoppingCartItem);
         }
-
         // load the user's cart rows, look up each product, and build the ShoppingCart
         return shoppingCart;
     }
@@ -52,11 +52,12 @@ public class ShoppingCartService
             shoppingCartRepository.save(shoppingCart);
         } else {
             CartItem cartItem = new CartItem();
-            cartItem.setCartItemId(cartItem.getCartItemId());
-            cartItem.setProductId(cartItem.getProductId());
-            cartItem.setQuantity(cartItem.getQuantity());
+            cartItem.setUserId(userID);
+            cartItem.setProductId(productID);
+            cartItem.setQuantity(quantity);
             shoppingCartRepository.save(cartItem);
         }
+
 return getByUserId(userID);
 
     }
