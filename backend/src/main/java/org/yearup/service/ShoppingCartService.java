@@ -36,7 +36,8 @@ public class ShoppingCartService
             ShoppingCartItem shoppingCartItem = new ShoppingCartItem();
                 shoppingCartItem.setProduct(product);
                 shoppingCartItem.setQuantity(c.getQuantity());
-                shoppingCartItem.setDiscountPercent(0);
+                shoppingCartItem.setDiscountPercent(shoppingCartItem.getDiscountPercent());
+                shoppingCartItem.getLineTotal();
                 shoppingCart.add(shoppingCartItem);
         }
         // load the user's cart rows, look up each product, and build the ShoppingCart
